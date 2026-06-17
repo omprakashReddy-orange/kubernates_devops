@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: service-b
+  name: service-b
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: service-b
+  template:
+    metadata:
+      labels:
+        app: service-b
+    spec:
+      containers:
+        - name: service-b
+          image: embarkx/tax-service-b:stable
+          env:
+            - name: PORT
+              value: "4000"
+#          env:
+#            - name: DB_USERNAME
+#              valueFrom:
+#                secretKeyRef:
+#                  name: app-secret
+#                  key: DB_USERNAME
+#            - name: DB_PASSWORD
+#              valueFrom:
+#                secretKeyRef:
+#                  name: app-secret
+#                  key: DB_PASSWORD
+#            - name: APP_ENV
+#              valueFrom:
+#                configMapKeyRef:
+#                  name: app-config
+#                  key: APP_ENV
+#            - name: APP_MESSAGE
+#              valueFrom:
+#                configMapKeyRef:
+#                  name: app-config
+#                  key: APP_MESSAGE
+          ports:
+            - containerPort: 80
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-b
+spec:
+  ports:
+    - nodePort: 30002
+      port: 4000
+      targetPort: 4000
+  selector:
+    app: service-b
+  type: ClusterIP
