@@ -39,6 +39,7 @@ jobs:
           java-version: '21'
 
       - name: Build JAR for docker
+        working-directory: docker/app1-hello/springboot/hello-spring
         run: mvn -B clean package -DskipTests
 
       - name: Setup Docker
