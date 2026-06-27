@@ -30,16 +30,27 @@ jobs:
     needs: build-test
     steps:
       - name: checkout code
-        run: echo "hello world"
+        uses: actions/checkout@v4
 
       - name: Setup Java
-        run: echo "setup java"
+        uses: actions/setup-java@v5
+        with:
+          distribution: 'temurin'
+          java-version: '21'
 
       - name: Build JAR for docker
-        run: echo "JAR build for docker"
+        run: mvn -B clean package -DskipTests
 
       - name: Setup Docker
-        run: echo "setup docker"
+        uses: docker/setup-buildx-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
 
       - name: Build and Push Docker Image
-        run: echo "build and push docker image"
+        uses: docker/build-push-action@v5
+        with:
+          context: docker/app1-hello/springboot/hello-spring
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/hello-spring:latest
