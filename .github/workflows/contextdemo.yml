@@ -1,0 +1,25 @@
+name: contextdemo.yml
+run-name: ${{ github.actor }} is running this action on ${{ github.event.repository.name }}
+
+on:
+  push
+
+jobs:
+  Explore-Github_Actions:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Hello world"
+      - run: echo ${{ github.actor }}
+      - run: echo ${{ github.event.repository.name }}
+      - run: echo ${{ github.event.repository.full_name }}
+      - run: echo ${{ github.event_name }}
+      - run: echo ${{ github.event.action }}
+      - run: echo ${{ github.event.workflow }}
+      - run: echo ${{ github.event.workflow_id }}
+      - run: echo ${{ github.event.workflow_url }}
+      - run: echo ${{ github.event.head_commit.message }}
+      - run: echo ${{ github.event.head_commit.id }}
+      - run: echo ${{ github.event.head_commit.timestamp }}
+      - run: echo ${{ github.event.head_commit.url }}
+      - run: echo ${{ github.event.head_commit.author.name }}
+      - run: echo ${{ github.event.head_commit.author.email }}
